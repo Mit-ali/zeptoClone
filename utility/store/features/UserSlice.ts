@@ -22,10 +22,8 @@ export const fetchUserDetails = createAsyncThunk(
   'user/fetchUserDetails',
   async (_, { rejectWithValue }) => {
     try {
-      const response: any = await api.get(
-        ENDPOINTS.profile.get,
-      );
-      return response?.data;
+      const response = ""
+      return response;
     } catch (error: unknown) {
       let errorMessage = 'Failed to fetch notifications';
       if (error instanceof Error) {
