@@ -2,6 +2,8 @@
 
 import {
   ChevronDown,
+  FlashIcon,
+  Search01Icon,
   ShoppingCart02Icon,
   UserCircleIcon,
 } from "@hugeicons/core-free-icons"
@@ -18,8 +20,13 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
 import { Input } from "../ui/input"
+import LoginDialog from "../ui/login-dialog"
+import CartSheet from "./CartSheet"
+
 export const Header = () => {
   const [mounted, setMounted] = useState(false)
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
+  const [isCartOpen, setIsCartOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -36,39 +43,30 @@ export const Header = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="relative w-full overflow-hidden rounded-2xl border border-border/60 bg-card shadow-xs"
+      className="sticky top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm"
     >
-      <div className="relative z-10 flex flex-col justify-around gap-2 sm:flex-row sm:items-center">
-        <div className="flex items-center gap-6">
-          {/* Logo */}{" "}
-          <div className="group relative">
-            <div className="relative flex h-20 w-20 items-center justify-center overflow-hidden rounded-xl bg-card">
-              <Image
-                src={
-                  "https://cdn.zeptonow.com/web-static-assets-prod/artifacts/16.31.6/images/header/primary-logo.svg"
-                }
-                height={80}
-                width={80}
-                alt={"zeptoClone Logo"}
-                className="object-cover"
-              />
+      <div className="mx-auto flex h-[80px] max-w-[1400px] items-center justify-between gap-4 px-4 sm:px-6 md:gap-8">
+        <div className="flex shrink-0 items-center gap-6 md:gap-8">
+          <Image
+            src="https://cdn.zeptonow.com/web-static-assets-prod/artifacts/16.31.6/images/header/primary-logo.svg"
+            height={36}
+            width={112}
+            alt="Zepto"
+            className="object-contain w-[90px] md:w-[112px]"
+          />
+
+          <div className="hidden flex-col gap-0.5 sm:flex">
+            <div className="flex items-center gap-1">
+              <HugeiconsIcon icon={FlashIcon} size={18} fill="#3B1C57" className="text-[#3B1C57]" />
+              <span className="text-[15px] font-bold text-[#3B1C57]">
+                Delivery in minutes*
+              </span>
             </div>
-          </div>
-          <div className="flex flex-col items-start gap-1">
-            <span className="text-sm font-bold text-foreground">
-              Delivery in Minute *
-            </span>{" "}
             <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <Button
-                    icon={<HugeiconsIcon icon={ChevronDown} />}
-                    variant="outline"
-                  >
-                    Select Location
-                  </Button>
-                }
-              />
+              <DropdownMenuTrigger className="flex items-center gap-1 text-[13px] font-medium text-gray-500 hover:text-gray-700 outline-none">
+                Select Location
+                <HugeiconsIcon icon={ChevronDown} size={14} />
+              </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56">
                 <DropdownMenuGroup>
                   <DropdownMenuItem>Pune</DropdownMenuItem>
@@ -76,27 +74,43 @@ export const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <div className="space-y-1">
+        </div>
+
+        <div className="flex-1 max-w-[700px] w-full hidden md:block">
+          <div className="relative flex items-center w-full">
+            <HugeiconsIcon icon={Search01Icon} size={20} className="absolute left-4 text-gray-400" />
             <Input
-              placeholder="Search..."
+              placeholder='Search for "kurkure"'
               type="search"
-              className="w-0 min-w-[700px] rounded-lg border-2 border-input bg-background px-4 py-2 text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary sm:w-auto"
+              className="h-12 w-full rounded-xl border border-gray-200 bg-white pl-12 pr-4 text-[15px] font-medium text-gray-900 shadow-sm placeholder:text-gray-400 focus-visible:border-gray-300 focus-visible:ring-1 focus-visible:ring-gray-300"
             />
           </div>
         </div>
 
-        {/* Right Side Pill/Status */}
-        <div className="flex items-end justify-end gap-4 sm:items-center">
-          <span className="text-sm font-bold text-foreground">
+        <div className="flex shrink-0 items-center gap-6">
+          <Button
+            variant={"none"}
+            onClick={() => setIsLoginOpen(true)}
+            className="flex flex-col items-center gap-1 text-sm font-bold text-foreground hover:opacity-80 transition-opacity hover:text-foreground/80"
+          >
             <HugeiconsIcon icon={UserCircleIcon} />
-            <span className="">Login</span>
-          </span>
-          <span className="text-sm font-bold text-foreground">
+            <span>Login</span>
+          </Button>
+
+          <Button
+            variant={"none"}
+            onClick={() => setIsCartOpen(true)}
+            className="flex flex-col items-center gap-1 text-sm font-bold text-foreground hover:opacity-80 transition-opacity hover:text-foreground/80"
+          >
             <HugeiconsIcon icon={ShoppingCart02Icon} />
-            <span className="">Cart</span>
-          </span>
+            <span>Cart</span>
+          </Button>
+
         </div>
       </div>
+      <CartSheet open={isCartOpen} onOpenChange={setIsCartOpen} />
+      <LoginDialog open={isLoginOpen} onOpenChange={setIsLoginOpen} />
     </motion.div>
+
   )
 }

@@ -1,5 +1,5 @@
 "use client"
-import { RootState } from "@/utility/store"
+import { RootState } from "@/utility/store/store"
 export const loadState = () => {
   if (typeof window === "undefined") return
   try {

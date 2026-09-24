@@ -1,33 +1,34 @@
-import { Geist_Mono, Inter } from "next/font/google"
-
 import HomeLayout from "@/components/Layout/HomeLayout"
-import { cn } from "@/lib/utils"
 import "./globals.css"
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
-
-const fontMono = Geist_Mono({
+import { ReactNode } from "react"
+import { Fraunces, Nunito } from "next/font/google"
+import StoreProvider from "@/utility/StoreProvider"
+const zeptoNorms = Nunito({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--zepto-font-family-name",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
 })
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--fraunces-font-family-name",
+  display: "swap",
+})
+
+
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: ReactNode
 }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={cn(
-        "antialiased",
-        fontMono.variable,
-        "font-sans",
-        inter.variable
-      )}
-    >
-      <body>
-        <HomeLayout>{children}</HomeLayout>
+    <html lang="en" className={`${zeptoNorms.variable} ${fraunces.variable}`}>
+      <body className="min-h-screen w-full">
+        <StoreProvider>
+          <HomeLayout>{children}</HomeLayout>
+        </StoreProvider>
       </body>
     </html>
   )

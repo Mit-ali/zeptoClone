@@ -3,21 +3,21 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
+import { Label } from "./label"
 
 const inputVariants = cva(
-  "text-md flex w-full rounded-md border border-2 border-input border-transparent bg-black/5 px-4 py-2 ring-offset-background transition-all duration-500 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground hover:bg-black/10 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+  "flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200",
   {
     variants: {
       variant: {
-        default:
-          "focus-visible:border-2 focus-visible:border-primary focus-visible:bg-transparent",
+        default: "",
         destructive:
-          "bg-red-0 border-red-500 text-red-900 placeholder:text-red-300 hover:bg-red-50 focus-visible:border-red-500 focus-visible:ring-red-500",
+          "border-destructive/50 text-destructive placeholder:text-destructive/60 focus-visible:ring-destructive/30 focus-visible:border-destructive",
       },
       inputSize: {
         default: "h-10",
-        sm: "h-9 rounded-md",
-        lg: "h-11 rounded-md",
+        sm: "h-9 px-3 py-1 text-xs",
+        lg: "h-12 px-4 py-3 text-base",
       },
     },
     defaultVariants: {
@@ -65,13 +65,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label
-            htmlFor={inputId}
-            className="mb-1 block text-sm font-semibold text-slate-700"
-          >
+          <Label htmlFor={inputId} required={required}>
             {label}
-            {required && <span className="ml-1 text-red-500">*</span>}
-          </label>
+          </Label>
         )}
         <div className="relative">
           {startIcon && (
@@ -84,12 +80,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             type={type}
             className={cn(
               inputVariants({ variant: appliedVariant, inputSize, className }),
-              startIcon && "pl-10", // Add padding if start icon exists
-              backIcon && "pr-10", // Add padding if back icon exists
-              // Hide default date picker indicator when backIcon is present on a date input
+              startIcon && "pl-10",
+              backIcon && "pr-10",
               type === "date" &&
-                backIcon &&
-                "[&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:w-8 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0"
+              backIcon &&
+              "[&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:right-0 [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:w-8 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0"
             )}
             ref={ref}
             required={required}
@@ -98,16 +93,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {backIcon && (
             <div
               onClick={onClickBackIcon}
-              className={`absolute top-1/2 right-3 -translate-y-1/2 text-slate-400 ${
-                onClickBackIcon ? "cursor-pointer" : "pointer-events-none"
-              }`}
+              className={`absolute top-1/2 right-3 -translate-y-1/2 text-slate-400 ${onClickBackIcon ? "cursor-pointer" : "pointer-events-none"
+                }`}
             >
               {backIcon}
             </div>
           )}
         </div>
         {error && (
-          <span className="mt-1 block animate-in text-xs font-medium text-red-500 fade-in-0 slide-in-from-top-1">
+          <span className="mt-1.5 flex items-center gap-1 text-xs font-medium text-destructive animate-in fade-in-0 slide-in-from-top-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
             {error}
           </span>
         )}
